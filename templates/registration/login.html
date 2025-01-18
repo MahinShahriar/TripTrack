@@ -1,0 +1,14 @@
+{% if form.errors %}
+    <ul>
+    {% for error in form.errors %}
+        <li>{{ error }} </li>
+    {% endfor %}</ul>
+{% endif %}
+<form action="{% url 'login'%}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Login">
+    <input type="hidden" value={{ next }}>
+
+</form>
+<p>Not have a account? please <a href="{% url 'signup' %}">Register</a></p>

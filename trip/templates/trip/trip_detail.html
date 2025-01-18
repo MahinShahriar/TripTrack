@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block content %}
+<h1>{{ trip}}</h1>
+<ol>
+    {% for note in notes %}
+    <li class="p-5"><a href="{% url 'note_detail' pk=note.pk %}">
+        <div class="bg-white rounded-lg shadow-md p-5">
+            <h2 class="text-xl font-semibold mb-3">{{ note.title}}</h2>
+            <span><{{ note.type }}></span>
+            <p class="flex justify-between mb-2">
+                <strong>{{ note.description|truncatewords:15 }}...</strong>
+            </p>
+        </div>
+    </a>
+    </li>
+    {% endfor %}
+</ol>
+{% endblock %}

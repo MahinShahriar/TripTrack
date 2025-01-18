@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<h1 class="text-4xl underline underline-offset-4 mb-8">Note Details</h1>
+    <div>
+        <a href="{% url 'note_update' pk=note.pk %}"><button class="bg-orange-400 hover:bg-orange-300 py-2 px-4 font-bold mb-4">Edit</button></a>
+        <a href="{% url 'note_delete' pk=note.pk %}"><button class="bg-red-500 hover:bg-red-300 py-2 px-4 font-bold mb-4">Delete</button></a>
+    </div>
+    <div class="bg-gray-50 p-8 rounded shadow my-4">
+        <p class="text-2xl text-bold">Title: {{ note.title }}</p><br>
+        {% if note.img %}
+            <img class="p-4" src="{{note.img.url }}" alt="{{note.title}}">
+        {% endif %}
+        <p class="text-2xl"> Description: <br> {{ note.description }}</p><br>
+        <p class="text-2xl"> Type : {{ note.type }}</p>
+
+    </div>
+
+{% endblock %}

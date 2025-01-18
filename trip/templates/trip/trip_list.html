@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+    {% if trips %}
+            <ol>
+                {% for trip in trips %}
+                     <li class="p-5">
+                         <div class="bg-white rounded-lg shadow-md p-5 hover:cursor-pointer">
+                             <div class="justify-self-start">
+                                 <a href="{% url 'trip_detail' pk=trip.pk %}">
+                                    <h2 class="text-xl font-semibold mb-3">{{trip.city}} | {{trip.country}}</h2>
+                                    <p class="flex justify-between mb-2">
+                                    <span>{{trip.start_date}} to {{ trip.end_date }}</span></p>
+                                 </a>
+                             </div>
+                             <a href="{% url 'trip_delete' pk=trip.pk %}"><button class="bg-red-500 hover:bg-red-300 py-2 px-4 font-bold mb-4 justify-self-end"> Delete </button> </a>
+
+                     </li>
+                {% endfor %}
+            </ol>
+        {%  else %}
+            <h4>You haven't any trip listed.</h4>
+        {% endif %}
+
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">Log in</a></p>
+    {% endif %}
+
+{% endblock %}

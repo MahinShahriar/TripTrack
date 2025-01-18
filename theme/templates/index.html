@@ -1,0 +1,68 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Track</title>
+    {% tailwind_css %}
+<!--    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">-->
+</head>
+<body class="bg-gray-100">
+
+    <div class="flex">
+        <div class="w-1/5 bg-gray-200 p-6">
+                {% if user.is_authenticated %}
+                    <ul>
+                        <li ><a href="{% url 'trip_form'%}"><button class="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-md w-full">
+                            New Trip</button></a></li>
+                        <li><a href="{%url 'note_form'%}"><button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-md w-full">
+                            New Note </button></a></li>
+                    </ul>
+                    <hr class="my-4">
+                    <ul>
+
+                    <li class="text-orange font-bold">User: {{ user.username }}</li>
+                        <br>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <input class="bg-gray-600 hover:bg-gray-400 text-white font-bold py-2 px-4 w-full" type="submit" value="Logout">
+                        </form>
+
+                {% else %}
+
+                    <li class="bg-blue-500  hover:bg-blue-700 text-white font-bold px-8 py-2 w-full"><a href="{% url 'login' %}">Log in</a></li>
+                    <li class="bg-green-500 hover:bg-green-700 text-white font-bold px-7 py-2 w-full"><a href="{% url 'signup' %}">Register</a></li>
+                    </ul>
+                {%endif%}
+        </div>
+
+        <div class="w-4/5 ml-6 p-6">
+            <h1 class="text-2xl font-bold mb-4"><a href="/">Trip Track</a></h1>
+            {% if messages %}
+                <div class="fixed top-0 right-0 p-4">
+                    {% for message in messages %}
+                        <div class="bg-{{ message.tags }}-100 border border-{{ message.tags }}-400 text-{{ message.tags }}-700 px-4 py-2 rounded-md" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% block content %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'trip_list'%}"><div class="bg-gray-200 p-2 hover:bg-gray-300 hover:cursor-pointer">
+                        <p>Trip list</p>
+                    </div></a>
+                    <a href="{% url 'note_list'%}"><div class="bg-gray-200 p-2 hover:bg-gray-300 hover:cursor-pointer">
+                        <p>Note list</p>
+                    </div></a>
+
+                {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+
+</body>
+</html>

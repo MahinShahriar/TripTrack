@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+{% block content %}
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p><br>
+    {{ form.as_p }}
+    <input type="submit" value="Confirm" class="bg-red-500 hover:bg-red-300 py-2 px-4 font-bold mb-4">
+</form>
+<a href="{% url 'note_list' %}"><button class="bg-green-400 hover:bg-green-300 py-2 px-5 p-2 font-bold mb-4">Cancel</button></a>
+{% endblock %}
