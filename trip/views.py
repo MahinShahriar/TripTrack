@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, CreateView, DetailView, ListView, UpdateView, DeleteView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.contrib import messages
+from .forms import CreateTripForm
 
 from .models import Trip, Note
 
@@ -16,12 +16,6 @@ def trips_list(request):
     context = {
             'trips': trips,
         }
-
-    # except:
-    #     context = {
-    #         'error': "You haven't any Trip."
-    #     }
-
     return render(request, "trip/trip_list.html", context)
 
 
@@ -34,7 +28,7 @@ class SignupView(CreateView):
 class TripCreateView(CreateView):
     model = Trip
     success_url = reverse_lazy('trip_list')
-    fields = ['city', 'country', 'start_date', 'end_date']
+    form_class = CreateTripForm
 
     def form_valid(self, form):
         form.instance.traveller = self.request.user
@@ -70,7 +64,6 @@ class NoteListView(ListView):
         return queryset
 
 
-
 class CreateNoteView(CreateView):
     model = Note
     success_url = reverse_lazy('note_list')
@@ -83,6 +76,7 @@ class CreateNoteView(CreateView):
 
         return form
 
+
 class NoteUpdateView(UpdateView):
     model = Note
     success_url = reverse_lazy('note_list')
@@ -94,6 +88,7 @@ class NoteUpdateView(UpdateView):
         form.fields['trip'].queryset = trips
 
         return form
+
 
 class NoteDeleteView(DeleteView):
     model = Note

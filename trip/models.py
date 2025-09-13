@@ -12,7 +12,7 @@ class Trip(models.Model):
     traveller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trips')
 
     def __str__(self):
-        return f"{self.city}, {self.country} | {self.start_date.year}"
+        return f"{self.city}, {self.country} "
 
 
 class Note(models.Model):
