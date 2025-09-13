@@ -28,9 +28,7 @@ TripTrack is a web application built for travelers who want to preserve their ch
 
 2. Install dependencies:
    ```bash
-   pip install django
-   pip install django-tailwind
-   pip install django-crispy-forms crispy-tailwind
+   pip install -r requirements.txt
    ```
 
 3. Setup Tailwind for Django:
