@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     # local app
     'trip',
 ]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -67,9 +69,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'TripTrack.urls'
 TAILWIND_APP_NAME = 'theme'
-
-CRISPY_TEMPLATE_PACK ='tailwind'  #'bootstrap4'  # or 'bootstrap5', 'uni_form', etc.
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 TEMPLATES = [
     {
@@ -143,11 +142,12 @@ STATIC_ROOT = STATIC_DIR
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'trip_list'
+LOGIN_REDIRECT_URL = '/dashboard'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # MEDIA
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 #ips

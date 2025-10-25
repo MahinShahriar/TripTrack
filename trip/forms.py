@@ -1,5 +1,5 @@
 from django import forms
-from .models import Trip
+from .models import Trip, Note
 
 
 class CreateTripForm(forms.ModelForm):
@@ -28,3 +28,15 @@ class CreateTripForm(forms.ModelForm):
     class Meta:
         model = Trip
         fields = ['city', 'country', 'start_date', 'end_date']
+
+class CreateNoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ['trip', 'title', 'description', 'type', 'img']
+        # max image size 5MB
+        def clean_img(self):
+            img = self.cleaned_data.get('img', False)
+            if img:
+                if img.size > 5*1024*1024:
+                    raise forms.ValidationError("Image file too large ( > 5MB )")
+            return img

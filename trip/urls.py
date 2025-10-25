@@ -10,9 +10,10 @@ urlpatterns = [
         path('trip/delete/<int:pk>', views.TripDeleteView.as_view(), name='trip_delete'),
 
         path('notes', views.NoteListView.as_view(), name='note_list'),
-        path('create_note', views.CreateNoteView.as_view(), name='note_form'),
+        path('create_note/', views.create_note, name='note_form'),
+        path('create_note/<int:trip_pk>/', views.create_note, name='note_form_trip'),
         path('trip/note/<int:pk>', views.NoteDetailView.as_view(), name='note_detail'),
-        path('note/update/<int:pk>', views.NoteUpdateView.as_view(), name='note_update'),
+        path('note/update/<int:pk>', views.update_note, name='note_update'),
         path('note/delete/<int:pk>', views.NoteDeleteView.as_view(), name='note_delete'),
 
 ]

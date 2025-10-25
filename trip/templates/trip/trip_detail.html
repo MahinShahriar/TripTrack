@@ -1,6 +1,15 @@
 {% extends 'index.html' %}
 {% block content %}
-<h1>{{ trip}}</h1>
+
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl underline underline-offset-4"> {{ trip.city}}|{{trip.country}}</h1>
+    <a href="{% url 'note_form_trip' trip_pk=trip.pk %}">
+        <button class="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded">
+            Add Note
+        </button>
+    </a>
+
+
 <ol>
     {% for note in notes %}
     <li class="p-5"><a href="{% url 'note_detail' pk=note.pk %}">

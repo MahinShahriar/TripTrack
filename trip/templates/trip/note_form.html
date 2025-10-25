@@ -1,12 +1,12 @@
 {% extends 'index.html' %}
 {% block content %}
-
+{% load tailwind_filters %}
 
 
 <div class="w-full max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden md:max-w-xl">
   <div class="p-6 space-y-4 md:p-8">
     <h1 class="text-xl font-semibold text-gray-900">Create New Note</h1>
-    <form class="space-y-4" method="post">
+    <form  method="post" enctype="multipart/form-data" class="space-y-4">
          {% csrf_token %}
           {{ form.as_p }}
        <div>

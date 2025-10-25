@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, CreateView, DetailView, ListView, UpdateView, DeleteView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+
+
 from django.urls import reverse_lazy
-from .forms import CreateTripForm
+from .forms import CreateTripForm, CreateNoteForm
 
 from .models import Trip, Note
 
@@ -22,7 +25,7 @@ def trips_list(request):
 class SignupView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
-    template_name = 'trip/signup.html'
+    template_name = 'register.html'
 
 
 class TripCreateView(CreateView):
@@ -64,31 +67,42 @@ class NoteListView(ListView):
         return queryset
 
 
-class CreateNoteView(CreateView):
-    model = Note
-    success_url = reverse_lazy('note_list')
-    fields = ['trip', 'title', 'description', 'type', 'img', ]
+@login_required
+def create_note(request, trip_pk=None):
+    trips = Trip.objects.filter(traveller=request.user) if trip_pk is None else Trip.objects.filter(traveller=request.user, id=trip_pk)
 
-    def get_form(self):
-        form = super(CreateNoteView, self).get_form()
-        trips = Trip.objects.filter(traveller=self.request.user)
+    if request.method == 'POST':
+        print("FILES RECEIVED:", request.FILES)
+        form = CreateNoteForm(request.POST, request.FILES)
         form.fields['trip'].queryset = trips
 
-        return form
-
-
-class NoteUpdateView(UpdateView):
-    model = Note
-    success_url = reverse_lazy('note_list')
-    fields = ['trip', 'title', 'description', 'type', 'img', ]
-
-    def get_form(self):
-        form = super(NoteUpdateView, self).get_form()
-        trips = Trip.objects.filter(traveller=self.request.user)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.save()
+            return redirect('note_list')
+    else:
+        form = CreateNoteForm()
         form.fields['trip'].queryset = trips
 
-        return form
+    return render(request, 'trip/note_form.html', {'form': form})
 
+
+
+@login_required
+def update_note(request, pk):
+    note = get_object_or_404(Note, pk=pk)
+    trips = Trip.objects.filter(traveller=request.user)
+    if request.method == 'POST':
+        form = CreateNoteForm(request.POST, request.FILES, instance=note)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.save()
+            return redirect('note_list')
+    else:
+        form = CreateNoteForm(instance=note)
+        form.fields['trip'].queryset = trips  # show only user's trips
+
+    return render(request, 'trip/note_form.html', {'form': form, 'note': note})
 
 class NoteDeleteView(DeleteView):
     model = Note

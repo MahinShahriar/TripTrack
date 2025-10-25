@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+import  os
 
 User = get_user_model()
 
@@ -30,4 +31,10 @@ class Note(models.Model):
 
     def __str__(self):
         return self.title
+
+    def delete(self, *args, **kwargs):
+        # Delete the image file if it exists
+        if self.img and os.path.isfile(self.img.path):
+            os.remove(self.img.path)
+        super().delete(*args, **kwargs)
 
